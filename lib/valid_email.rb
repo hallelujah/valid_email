@@ -1,6 +1,7 @@
 require 'active_model'
 require 'active_model/validations'
 require 'mail'
+require 'resolv'
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record,attribute,value)
     begin
@@ -15,9 +16,17 @@ class EmailValidator < ActiveModel::EachValidator
       # We exclude valid email values like <user@localhost.com>
       # Hence we use m.__send__(tree).domain
       r &&= (t.domain.dot_atom_text.elements.size > 1)
+      # Check if domain has DNS MX record
+      if r && options[:mx]
+	mx = []
+        Resolv::DNS.open do |dns|
+          mx = dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
+        end
+        r &&= (mx.size > 0)
+      end
     rescue Exception => e
       r = false
     end
-    record.errors[attribute] << (options[:message] || "is invalid") unless r
+    record.errors.add attribute, (options[:message] || "is invalid") unless r
   end
 end

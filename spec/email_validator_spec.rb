@@ -47,6 +47,34 @@ describe EmailValidator do
       subject.valid?.should be_false
       subject.errors[:email].should == [ "is invalid" ]
     end
+  end
+    
+  person_class_mx = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => {:mx => true}
+  end
+
+  describe "validating email with MX" do
+    subject { person_class_mx.new }
+
+    it "should pass when email domain has MX record" do
+      subject.email = 'john@gmail.com'
+      subject.valid?.should be_true
+      subject.errors[:email].should be_empty
+    end
+
+    it "should fail when email domain has no MX record" do
+      subject.email = 'john@subdomain.rubyonrails.org'
+      subject.valid?.should be_false
+      subject.errors[:email].should == [ "is invalid" ]
+    end
+
+    it "should fail when domain does not exists" do
+      subject.email = 'john@nonexistentdomain.abc'
+      subject.valid?.should be_false
+      subject.errors[:email].should == [ "is invalid" ]
+    end
 
   end
 end

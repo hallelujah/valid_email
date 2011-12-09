@@ -32,6 +32,9 @@ In your code :
     p.email = "John Does <john@doe.com>"
     p.valid? # => false
 
+You can check if email domain has MX record :
+
+    validates :email, :email => {:mx => true}
 
 
 # Note on Patches/Pull Requests

@@ -36,6 +36,22 @@ You can check if email domain has MX record :
 
     validates :email, :email => {:mx => true}
 
+Or
+    validates :email, :email => true, :mx => true
+
+
+If you don't want the MX validator stuff, just require the right file
+
+    require 'valid\_email/email_validator'
+
+Or in your Gemfile
+
+    gem 'valid_email', :require => 'valid_email/email_validator'
+
+
+# Credits
+
+* Dush dusanek[at]iquest.cz
 
 # Note on Patches/Pull Requests
 

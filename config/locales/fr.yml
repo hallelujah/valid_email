@@ -1,0 +1,5 @@
+fr:
+  active_record:
+    validations:
+      email:
+        invalid: "est invalide"

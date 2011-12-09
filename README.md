@@ -42,7 +42,7 @@ Or
 
 If you don't want the MX validator stuff, just require the right file
 
-    require 'valid\_email/email_validator'
+    require 'valid_email/email_validator'
 
 Or in your Gemfile
 

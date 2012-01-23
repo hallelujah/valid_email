@@ -10,7 +10,7 @@ class MxValidator < ActiveModel::EachValidator
       mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
     end
     r = mx.size > 0
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "active_record.validations.email")) unless r
+    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
     r
   end
 end

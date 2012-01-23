@@ -1,5 +1,5 @@
 fr:
-  active_record:
+  valid_email:
     validations:
       email:
         invalid: "est invalide"

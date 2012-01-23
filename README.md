@@ -34,10 +34,10 @@ In your code :
 
 You can check if email domain has MX record :
 
-    validates :email, :email => {:mx => true}
+    validates :email, :email => {:mx => true, :message => I18n.t('validations.errors.models.user.invalid_email')}
 
 Or
-    validates :email, :email => true, :mx => true
+    validates :email, :email => {:message => I18n.t('validations.errors.models.user.invalid_email')}, :mx => {:message => I18n.t('validations.errors.models.user.invalid_mx')}
 
 
 If you don't want the MX validator stuff, just require the right file

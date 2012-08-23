@@ -1,0 +1,5 @@
+de:
+  valid_email:
+    validations:
+      email:
+        invalid: "ist ungültig"

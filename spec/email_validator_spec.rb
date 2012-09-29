@@ -1,17 +1,6 @@
 require 'spec_helper'
 
 describe EmailValidator do
-  person_class = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
-    validates :email, :email => true
-  end
-
-  person_class_mx = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
-    validates :email, :email => {:mx => true}
-  end
 
 
   shared_examples_for "Validating emails" do
@@ -21,7 +10,7 @@ describe EmailValidator do
     end
 
     describe "validating email" do
-      subject { person_class.new }
+      subject { Person.new }
 
       it "should fail when email empty" do
         subject.valid?.should be_false
@@ -61,7 +50,7 @@ describe EmailValidator do
     end
 
     describe "validating email with MX" do
-      subject { person_class_mx.new }
+      subject { PersonWithMx.new }
 
       it "should pass when email domain has MX record" do
         subject.email = 'john@gmail.com'
@@ -95,5 +84,5 @@ describe EmailValidator do
     let!(:errors) { [ "est invalide" ] }
     it_should_behave_like "Validating emails"
   end
-  
+
 end

@@ -48,6 +48,28 @@ Or in your Gemfile
 
     gem 'valid_email', :require => 'valid_email/email_validator'
 
+# Testing Support
+
+Require the `valid_email/testing` in your `{test|spec}_helper.rb`:
+
+    require 'valid_email/testing'
+
+This disable real (probably time expensive) mx lookups during validation.
+Instead domains which should be treated as valid, have to be white-listed:
+
+    p = Person.new
+    p.name = "hallelujah"
+    p.email = "john@example.com"
+    p.valid? # => false
+    MxValidator.add_valid_domain("example.com")
+    p.valid? # => true
+
+MxValidation can be also disabled at all ...
+
+    MxValidator.skip_mx_validation = true
+    p.email = "john@notexistentdomain.abc"
+    p.valid? # => true
+
 
 # Credits
 

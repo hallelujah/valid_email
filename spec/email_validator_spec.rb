@@ -13,6 +13,17 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  person_class_helper = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates_email :email
+  end
+
+  person_class_mx_helper = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates_email_and_mx :email
+  end
 
   shared_examples_for "Validating emails" do
     
@@ -60,8 +71,70 @@ describe EmailValidator do
 
     end
 
+    describe "validating email with helper" do
+      subject { person_class_helper.new }
+
+      it "should fail when email empty" do
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should fail when email is not valid" do
+        subject.email = 'joh@doe'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should fail when email is valid with information" do
+        subject.email = '"John Doe" <john@doe.com>'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should pass when email is simple email address" do
+        subject.email = 'john@doe.com'
+        subject.valid?.should be_true
+        subject.errors[:email].should be_empty
+      end
+
+      it "should fail when email is simple email address not stripped" do
+        subject.email = 'john@doe.com            '
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should fail when passing multiple simple email addresses" do
+        subject.email = 'john@doe.com, maria@doe.com'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+    end
+
     describe "validating email with MX" do
       subject { person_class_mx.new }
+
+      it "should pass when email domain has MX record" do
+        subject.email = 'john@gmail.com'
+        subject.valid?.should be_true
+        subject.errors[:email].should be_empty
+      end
+
+      it "should fail when email domain has no MX record" do
+        subject.email = 'john@subdomain.rubyonrails.org'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should fail when domain does not exists" do
+        subject.email = 'john@nonexistentdomain.abc'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+    end
+
+    describe "validating email with MX helper" do
+      subject { person_class_mx_helper.new }
 
       it "should pass when email domain has MX record" do
         subject.email = 'john@gmail.com'

@@ -14,3 +14,18 @@ class MxValidator < ActiveModel::EachValidator
     r
   end
 end
+
+module ActiveModel
+  module Validations
+    module HelperMethods
+
+      def validates_email_and_mx(*attr_names)
+        merged_attributes = _merge_attributes(attr_names)
+
+        validates_with EmailValidator, merged_attributes.clone
+        validates_with MxValidator, merged_attributes.clone
+      end
+
+    end
+  end
+end

@@ -26,3 +26,17 @@ class EmailValidator < ActiveModel::EachValidator
     record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
   end
 end
+
+module ActiveModel
+  module Validations
+    module HelperMethods
+
+      def validates_email(*attr_names)
+        merged_attributes = _merge_attributes(attr_names)
+
+        validates_with EmailValidator, merged_attributes.clone
+      end
+
+    end
+  end
+end

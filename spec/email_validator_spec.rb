@@ -13,9 +13,15 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  person_class_mx_separated = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :mx => true
+  end
+
 
   shared_examples_for "Validating emails" do
-    
+
     before :each do
       I18n.locale = locale
     end
@@ -81,19 +87,28 @@ describe EmailValidator do
         subject.errors[:email].should == errors
       end
     end
+
+    describe "validating email with MX separated" do
+      subject { person_class_mx_separated.new }
+
+      it "should not raise exceptions if domain is not specified" do
+        subject.email = 'john'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+    end
   end
-  
+
   describe "Translating in english" do
     let!(:locale){ :en }
     let!(:errors) { [ "is invalid" ] }
     it_should_behave_like "Validating emails"
   end
-  
+
   describe "Translating in french" do
     let!(:locale){ :fr }
-    
+
     let!(:errors) { [ "est invalide" ] }
     it_should_behave_like "Validating emails"
   end
-  
 end

@@ -31,6 +31,14 @@ describe EmailValidator do
     validates :email, :mx => true
   end
 
+
+  shared_examples_for "Invalid model" do
+    before { subject.valid? }
+
+    it { should_not be_valid }
+    specify { subject.errors[:email].should =~ errors }
+  end
+
   shared_examples_for "Validating emails" do
 
     before :each do
@@ -99,13 +107,17 @@ describe EmailValidator do
       end
     end
 
-    describe "validating email with MX separated" do
+    describe "validating MX" do
       subject { person_class_mx_separated.new }
 
-      it "should not raise exceptions if domain is not specified" do
-        subject.email = 'john'
-        subject.valid?.should be_false
-        subject.errors[:email].should == errors
+      context "when domain is not specified" do
+        before { subject.email = 'john' }
+        it_should_behave_like "Invalid model"
+      end
+
+      context "when domain is not specified but @ is" do
+        before { subject.email = 'john@' }
+        it_should_behave_like "Invalid model"
       end
     end
 

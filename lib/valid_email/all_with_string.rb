@@ -1,4 +1,4 @@
-require 'valid_email/validate_email'
+require 'valid_email'
 class String
 
   def email?(options={})

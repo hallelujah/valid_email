@@ -13,6 +13,63 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  context ValidateEmail do
+
+    describe "validating email" do
+      subject { nil }
+
+      it "should fail when email empty" do
+        ValidateEmail.valid?(subject).should be_false
+      end
+
+      it "should fail when email is not valid" do
+        subject = 'joh@doe'
+        ValidateEmail.valid?(subject).should be_false
+      end
+
+      it "should fail when email is valid with information" do
+        subject = '"John Doe" <john@doe.com>'
+        ValidateEmail.valid?(subject).should be_false
+      end
+
+      it "should pass when email is simple email address" do
+        subject = 'john@doe.com'
+        ValidateEmail.valid?(subject).should be_true
+      end
+
+      it "should fail when email is simple email address not stripped" do
+        subject = 'john@doe.com            '
+        ValidateEmail.valid?(subject).should be_false
+      end
+
+      it "should fail when passing multiple simple email addresses" do
+        subject = 'john@doe.com, maria@doe.com'
+        ValidateEmail.valid?(subject).should be_false
+      end
+
+    end
+
+    describe "validating email with MX" do
+      subject { nil }
+
+      it "should pass when email domain has MX record" do
+        subject = 'john@gmail.com'
+        ValidateEmail.mx_valid?(subject).should be_true
+      end
+
+      it "should fail when email domain has no MX record" do
+        subject = 'john@subdomain.rubyonrails.org'
+        ValidateEmail.mx_valid?(subject).should be_false
+      end
+
+      it "should fail when domain does not exists" do
+        subject = 'john@nonexistentdomain.abc'
+        ValidateEmail.mx_valid?(subject).should be_false
+      end
+    end
+
+  end
+
 
   shared_examples_for "Validating emails" do
     

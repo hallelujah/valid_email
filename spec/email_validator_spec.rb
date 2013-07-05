@@ -70,6 +70,44 @@ describe EmailValidator do
 
   end
 
+  context String do
+
+    describe "validating email" do
+      subject { nil }
+
+      it "should fail when email empty" do
+        subject.email?.should be_false
+      end
+
+      it "should fail when email is not valid" do
+        subject = 'joh@doe'
+        subject.email?.should be_false
+      end
+
+      it "should fail when email is valid with information" do
+        subject = '"John Doe" <john@doe.com>'
+        subject.email?.should be_false
+      end
+
+      it "should pass when email is simple email address" do
+        subject = 'john@doe.com'
+        subject.email?.should be_true
+      end
+
+      it "should fail when email is simple email address not stripped" do
+        subject = 'john@doe.com            '
+        subject.email?.should be_false
+      end
+
+      it "should fail when passing multiple simple email addresses" do
+        subject = 'john@doe.com, maria@doe.com'
+        subject.email?.should be_false
+      end
+
+    end
+
+  end
+
 
   shared_examples_for "Validating emails" do
     

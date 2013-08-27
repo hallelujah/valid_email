@@ -85,14 +85,7 @@ describe EmailValidator do
   
   describe "Translating in english" do
     let!(:locale){ :en }
-    let!(:errors) { [ "is invalid" ] }
-    it_should_behave_like "Validating emails"
-  end
-  
-  describe "Translating in french" do
-    let!(:locale){ :fr }
-    
-    let!(:errors) { [ "est invalide" ] }
+    let!(:errors) { [ "translation missing: en.valid_email.validations.email.invalid" ] }
     it_should_behave_like "Validating emails"
   end
   

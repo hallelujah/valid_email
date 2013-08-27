@@ -4,7 +4,7 @@ require "valid_email/version"
 
 Gem::Specification.new do |s|
   s.name        = "valid_email"
-  s.version     = ValidEmailVersion
+  s.version     = "0.0.4"
   s.authors     = ["Ramihajamalala Hery"]
   s.email       = ["hery@rails-royce.org"]
   s.homepage    = "http://my.rails-royce.org/2010/07/21/email-validation-in-ruby-on-rails-without-regexp"
@@ -21,6 +21,6 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
-  s.add_runtime_dependency "mail"
-  s.add_runtime_dependency "activemodel"
+  s.add_dependency "mail"
+  s.add_dependency "activemodel"
 end

@@ -2,6 +2,7 @@ require 'active_model'
 require 'active_model/validations'
 require 'mail'
 require 'resolv'
+
 class MxValidator < ActiveModel::EachValidator
   def validate_each(record,attribute,value)
     m = Mail::Address.new(value)

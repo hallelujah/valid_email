@@ -26,6 +26,11 @@ class EmailValidator < ActiveModel::EachValidator
     rescue Exception => e
       r = false
     end
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+    if !r
+      # options is frozen, so make a copy
+      my_options = options.dup
+      my_options[:message] ||= I18n.t(:invalid, :scope => "valid_email.validations.email")
+      record.errors.add attribute, :invalid, my_options
+    end
   end
 end

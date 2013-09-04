@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe EmailValidator do
-  person_class = Class.new do
+  class EmailValidatorClass
     include ActiveModel::Validations
     attr_accessor :email
     validates :email, :email => true
   end
 
-  person_class_mx = Class.new do
+  class MxRecordValidatorClass
     include ActiveModel::Validations
     attr_accessor :email
     validates :email, :email => {:mx => true}
@@ -32,7 +32,7 @@ describe EmailValidator do
     end
 
     describe "validating email" do
-      subject { person_class.new }
+      subject { EmailValidatorClass.new }
 
       it "should fail when email empty" do
         subject.valid?.should be_false
@@ -72,7 +72,7 @@ describe EmailValidator do
     end
 
     describe "validating email with MX" do
-      subject { person_class_mx.new }
+      subject { MxRecordValidatorClass.new }
 
       it "should pass when email domain has MX record" do
         subject.email = 'john@gmail.com'
@@ -128,5 +128,37 @@ describe EmailValidator do
     let!(:errors) { [ "est invalide" ] }
     it_should_behave_like "Validating emails"
   end
-  
+
+  describe "validating email with a custom message that contains the invalid value" do
+    class EmailValidatorClassWithCustomMessage
+      include ActiveModel::Validations
+      attr_accessor :email
+      validates :email, :email => {:message => "\"%{value}\" is not a valid email address"}
+    end
+
+    subject { EmailValidatorClassWithCustomMessage.new }
+
+    it "should fail and contain the invalid value in the error message" do
+      subject.email = 'joh@doe'
+      subject.valid?.should be_false
+      subject.errors[:email].should == ["\"#{subject.email}\" is not a valid email address"]
+    end
+  end
+
+  describe "validating mx record with a custom message that contains the invalid value" do
+    class MxRecordValidatorClassWithCustomMessage
+      include ActiveModel::Validations
+      attr_accessor :email
+      validates :email, :email => {:mx => true, :message => "\"%{value}\" does not have a valid MX record"}
+    end
+
+    subject { MxRecordValidatorClassWithCustomMessage.new }
+
+    it "should fail and contain the invalid value in the error message" do
+      subject.email = 'joh@doe'
+      subject.valid?.should be_false
+      subject.errors[:email].should == ["\"#{subject.email}\" does not have a valid MX record"]
+    end
+  end
+
 end

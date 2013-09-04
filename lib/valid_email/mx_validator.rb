@@ -10,7 +10,12 @@ class MxValidator < ActiveModel::EachValidator
       mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
     end
     r = mx.size > 0
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+    if !r
+      # For some reason I don't understand, options is
+      # frozen, but I can still modify it
+      options[:message] ||= I18n.t(:invalid, :scope => "valid_email.validations.email")
+      record.errors.add attribute, :invalid, options
+    end
     r
   end
 end

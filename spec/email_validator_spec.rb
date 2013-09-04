@@ -13,6 +13,17 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  person_class_nil_allowed = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => {:allow_nil => true}
+  end
+
+  person_class_blank_allowed = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => {:allow_blank => true}
+  end
 
   shared_examples_for "Validating emails" do
     
@@ -81,6 +92,28 @@ describe EmailValidator do
         subject.errors[:email].should == errors
       end
     end
+  end
+  
+  describe "Can allow nil" do
+    subject { person_class_nil_allowed.new }
+
+    it "should pass even if mail isn't set" do
+      subject.email = nil
+      subject.should be_valid
+      subject.errors[:email].should be_empty
+    end
+
+  end
+
+  describe "Can allow blank" do
+    subject { person_class_blank_allowed.new }
+
+    it "should pass even if mail is a blank string set" do
+      subject.email = ''
+      subject.should be_valid
+      subject.errors[:email].should be_empty
+    end
+
   end
   
   describe "Translating in english" do

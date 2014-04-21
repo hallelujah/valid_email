@@ -23,6 +23,11 @@ class EmailValidator < ActiveModel::EachValidator
         require 'valid_email/mx_validator'
         r &&= MxValidator.new(:attributes => attributes).validate(record)
       end
+      # Check if domain is disposable
+      if r && options[:ban_disposable_email]
+        require 'valid_email/ban_disposable_email_validator'
+        r &&= BanDisposableEmailValidator.new(:attributes => attributes).validate(record)
+      end
     rescue Exception => e
       r = false
     end

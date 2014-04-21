@@ -13,6 +13,12 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  person_class_disposable_email = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => {:ban_disposable_email => true}
+  end
+
   person_class_nil_allowed = Class.new do
     include ActiveModel::Validations
     attr_accessor :email
@@ -118,6 +124,22 @@ describe EmailValidator do
       context "when domain is not specified but @ is" do
         before { subject.email = 'john@' }
         it_should_behave_like "Invalid model"
+      end
+    end
+
+    describe "validating email from disposable service" do
+      subject { person_class_disposable_email.new }
+
+      it "should pass when email from trusted email services" do
+        subject.email = 'john@mail.ru'
+        subject.valid?.should be_true
+        subject.errors[:email].should be_empty
+      end
+
+      it "should fail when email from disposable email services" do
+        subject.email = 'john@grr.la'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
       end
     end
 

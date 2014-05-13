@@ -1,5 +1,7 @@
 fr:
   valid_email:
     validations:
+      mx:
+        invalid: "n'appartient pas à un domaine valide"
       email:
         invalid: "est invalide"

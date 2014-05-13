@@ -1,5 +1,7 @@
 en:
   valid_email:
     validations:
+      mx:
+        invalid: "belongs to no valid domain"
       email:
         invalid: "is invalid"

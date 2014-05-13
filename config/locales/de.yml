@@ -1,5 +1,7 @@
 de:
   valid_email:
     validations:
+      mx:
+        invalid: "gehört zu keiner Domäne"
       email:
         invalid: "ist ungültig"

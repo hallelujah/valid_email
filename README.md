@@ -40,6 +40,8 @@ Or
 
     validates :email, :email => {:message => I18n.t('validations.errors.models.user.invalid_email')}, :mx => {:message => I18n.t('validations.errors.models.user.invalid_mx')}
 
+Alternatively, you can check if an email domain has a MX or A record by using `:mx_with_fallback` instead of `:mx`.
+
 You can detect disposable accounts
 
     validates :email, :email => {:ban_disposable_email => true, :message => I18n.t('validations.errors.models.user.invalid_email')}

@@ -13,6 +13,12 @@ describe EmailValidator do
     validates :email, :email => {:mx => true}
   end
 
+  person_class_mx_with_fallback = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => {:mx_with_fallback => true}
+  end
+
   person_class_disposable_email = Class.new do
     include ActiveModel::Validations
     attr_accessor :email
@@ -37,6 +43,11 @@ describe EmailValidator do
     validates :email, :mx => true
   end
 
+  person_class_mx_with_fallback_separated = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :mx_with_fallback => true
+  end
 
   shared_examples_for "Invalid model" do
     before { subject.valid? }
@@ -91,6 +102,28 @@ describe EmailValidator do
 
     end
 
+    describe "validating email with MX and fallback to A" do
+      subject { person_class_mx_with_fallback.new }
+
+      it "should pass when email domain has MX record" do
+        subject.email = 'john@gmail.com'
+        subject.valid?.should be_true
+        subject.errors[:email].should be_empty
+      end
+
+      it "should pass when email domain has no MX record but has an A record" do
+        subject.email = 'john@subdomain.rubyonrails.org'
+        subject.valid?.should be_true
+        subject.errors[:email].should be_empty
+      end
+
+      it "should fail when domain does not exists" do
+        subject.email = 'john@nonexistentdomain.abc'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+    end
+
     describe "validating email with MX" do
       subject { person_class_mx.new }
 
@@ -110,6 +143,20 @@ describe EmailValidator do
         subject.email = 'john@nonexistentdomain.abc'
         subject.valid?.should be_false
         subject.errors[:email].should == errors
+      end
+    end
+
+    describe "validating MX with fallback to A" do
+      subject { person_class_mx_with_fallback_separated.new }
+
+      context "when domain is not specified" do
+        before { subject.email = 'john' }
+        it_should_behave_like "Invalid model"
+      end
+
+      context "when domain is not specified but @ is" do
+        before { subject.email = 'john@' }
+        it_should_behave_like "Invalid model"
       end
     end
 
@@ -144,7 +191,7 @@ describe EmailValidator do
     end
 
   end
-  
+
   describe "Can allow nil" do
     subject { person_class_nil_allowed.new }
 

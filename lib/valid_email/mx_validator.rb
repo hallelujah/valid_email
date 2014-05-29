@@ -7,15 +7,19 @@ class MxValidator < ActiveModel::EachValidator
     begin
       m = Mail::Address.new(value)
       if m.domain
-        mx = []
-        Resolv::DNS.open do |dns|
-          mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
-        end
-        r = mx.size > 0
+        r = valid_domain?(m.domain)
       end
     rescue Mail::Field::ParseError
       #ignore this
     end
     record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+  end
+
+  def valid_domain?(domain)
+    mx = []
+    Resolv::DNS.open do |dns|
+      mx.concat dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
+    end
+    mx.size > 0
   end
 end

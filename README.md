@@ -58,6 +58,12 @@ Or in your Gemfile
 # Credits
 
 * Dush dusanek[at]iquest.cz
+* Ramihajamalala Hery hery[at]rails-royce.org
+* Marco Perrando mperrando[at]soluzioninrete.it
+* MIke Carter mike[at]mcarter.me
+* Oleg Shur workshur[at]gmail.com
+* Jörg Thalheim joerg[at]higgsboson.tk
+* Jean Boussier jean.boussier[at]gmail.com
 
 # Note on Patches/Pull Requests
 

@@ -1,11 +1,9 @@
 require 'valid_email/mx_validator'
-class MxWithFallbackValidator < MxValidator
-  def valid_domain?(domain)
-    mx = []
-    Resolv::DNS.open do |dns|
-      mx.concat dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
-      mx.concat dns.getresources(domain, Resolv::DNS::Resource::IN::A)
-    end
-    mx.size > 0
+class MxWithFallbackValidator < ActiveModel::EachValidator
+  def validate_each(record,attribute,value)
+    r = ValidateEmail.mx_valid_with_fallback?(value)
+    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+
+    r
   end
 end

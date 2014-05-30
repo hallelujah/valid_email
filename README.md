@@ -37,8 +37,14 @@ You can check if email domain has MX record :
     validates :email, :email => {:mx => true, :message => I18n.t('validations.errors.models.user.invalid_email')}
 
 Or
+
     validates :email, :email => {:message => I18n.t('validations.errors.models.user.invalid_email')}, :mx => {:message => I18n.t('validations.errors.models.user.invalid_mx')}
 
+Alternatively, you can check if an email domain has a MX or A record by using `:mx_with_fallback` instead of `:mx`.
+
+You can detect disposable accounts
+
+    validates :email, :email => {:ban_disposable_email => true, :message => I18n.t('validations.errors.models.user.invalid_email')}
 
 If you don't want the MX validator stuff, just require the right file
 
@@ -75,6 +81,12 @@ Or in `Gemfile` you can write:
 # Credits
 
 * Dush dusanek[at]iquest.cz
+* Ramihajamalala Hery hery[at]rails-royce.org
+* Marco Perrando mperrando[at]soluzioninrete.it
+* MIke Carter mike[at]mcarter.me
+* Oleg Shur workshur[at]gmail.com
+* Jörg Thalheim joerg[at]higgsboson.tk
+* Jean Boussier jean.boussier[at]gmail.com
 
 # Note on Patches/Pull Requests
 

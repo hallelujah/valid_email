@@ -1,0 +1,5 @@
+fi:
+  valid_email:
+    validations:
+      email:
+        invalid: ei ole kelvollinen

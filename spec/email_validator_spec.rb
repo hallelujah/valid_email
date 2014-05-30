@@ -70,6 +70,7 @@ describe EmailValidator do
 
   end
 
+<<<<<<< HEAD
   context String do
 
     describe "validating email" do
@@ -108,6 +109,8 @@ describe EmailValidator do
 
   end
 
+=======
+>>>>>>> rebasing
 
   shared_examples_for "Validating emails" do
     

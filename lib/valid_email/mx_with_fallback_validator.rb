@@ -1,4 +1,5 @@
 require 'valid_email/mx_validator'
+require 'validate_email'
 class MxWithFallbackValidator < ActiveModel::EachValidator
   def validate_each(record,attribute,value)
     r = ValidateEmail.mx_valid_with_fallback?(value)

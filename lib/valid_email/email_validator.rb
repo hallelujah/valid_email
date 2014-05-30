@@ -22,6 +22,9 @@ class EmailValidator < ActiveModel::EachValidator
       if r && options[:mx]
         require 'valid_email/mx_validator'
         r &&= MxValidator.new(:attributes => attributes).validate(record)
+      elsif r && options[:mx_with_fallback]
+        require 'valid_email/mx_with_fallback_validator'
+        r &&= MxWithFallbackValidator.new(:attributes => attributes).validate(record)
       end
       # Check if domain is disposable
       if r && options[:ban_disposable_email]

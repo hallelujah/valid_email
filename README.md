@@ -54,6 +54,29 @@ Or in your Gemfile
 
     gem 'valid_email', :require => 'valid_email/email_validator'
 
+## Usage outside of Ruby on Rails
+
+If you want to run the validation outside of rails, the module `ValidateEmail` is provided and can be used in this way:
+
+    require 'valid_email'
+    ValidateEmail.valid?('john@doe.com', mx: true) # mx can be omitted and will be false
+
+If you want to check mx only:
+
+    require 'valid_email'
+    ValidateEmail.mx_valid?('john@doe.com')
+
+## String monkeypatch
+
+There is also the option to use `String#email?` method if you include the file:
+
+    require 'valid_email/all_with_string'
+    'john@doe.com'.email? # => true
+    nil.email?            # => false
+
+Or in `Gemfile` you can write:
+
+    gem 'valid_email', :require => 'valid_email/all_with_string'
 
 # Credits
 

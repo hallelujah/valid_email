@@ -1,19 +1,24 @@
 require 'active_model'
 require 'active_model/validations'
 require 'mail'
+require 'valid_email/validate_email'
 class BanDisposableEmailValidator < ActiveModel::EachValidator
   # A list of disposable email domains
   def self.config=(options)
     @@config = options
   end
 
+  # Required to use config outside
+  def self.config
+    @@config = [] unless defined? @@config
+
+    @@config
+  end
+
   def validate_each(record, attribute, value)
-    begin
-      m = Mail::Address.new(value)
-      r = !@@config.include?(m.domain) if m.domain
-    rescue Exception => e
-      r = false
-    end
+    r = ValidateEmail.ban_disposable_email?(value)
     record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+
+    r
   end
 end

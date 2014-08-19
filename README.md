@@ -66,6 +66,13 @@ ValidateEmail.mx_valid_with_fallback?('email@randommail.com')
 ValidateEmail.valid?('email@randommail.com')
 ```
 
+Load it (and not the rails extensions) with 
+
+    gem 'valid_email', require: 'valid_email/validate_email'
+
+
+### String and Nil object extensions
+
 There is also a String and Nil class extension, if you require the gem in this way in Gemfile:
 
 ```ruby

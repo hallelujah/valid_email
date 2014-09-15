@@ -6,17 +6,19 @@ class ValidateEmail
       options = { :mx => false, :message => nil }.merge!(user_options)
       r       = false
       begin
-        m = Mail::Address.new(value)
-        # We must check that value contains a domain and that value is an email address
-        r = m.domain && m.address == value
-        t = m.__send__(:tree)
-        # We need to dig into treetop
-        # A valid domain must have dot_atom_text elements size > 1
-        # user@localhost is excluded
-        # treetop must respond to domain
-        # We exclude valid email values like <user@localhost.com>
-        # Hence we use m.__send__(tree).domain
-        r &&= (t.domain.dot_atom_text.elements.size > 1)
+        parser = EmailAddressParser.new
+        t = parser.parse(value)
+
+        r = t.domain && (t.text_value == value)
+
+        case t.domain.dot_atom_text.elements.size
+        when 0, 1
+          r &&= false
+        when 2
+          r &&= t.domain.dot_atom_text.elements[-1].empty?
+        else
+          r &&= true
+        end
         # Check if domain has DNS MX record
         if r && options[:mx]
           require 'valid_email/mx_validator'

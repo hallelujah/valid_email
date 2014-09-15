@@ -15,7 +15,7 @@ class ValidateEmail
         when 0, 1
           r &&= false
         when 2
-          r &&= t.domain.dot_atom_text.elements[-1].empty?
+          r &&= !t.domain.dot_atom_text.elements[-1].empty?
         else
           r &&= true
         end

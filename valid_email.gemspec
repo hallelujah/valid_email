@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
   s.add_runtime_dependency "mail"
+  s.add_runtime_dependency "treetop"
   s.add_runtime_dependency "activemodel"
 end

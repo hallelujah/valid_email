@@ -76,6 +76,18 @@ describe EmailValidator do
         subject.errors[:email].should == errors
       end
 
+      it "should fail when email domain is prefixed with dot" do
+        subject.email = 'john@.doe'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
+      it "should fail when email domain contains two consecutive dots" do
+        subject.email = 'john@doe-two..com'
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
       it "should fail when email is valid with information" do
         subject.email = '"John Doe" <john@doe.com>'
         subject.valid?.should be_false

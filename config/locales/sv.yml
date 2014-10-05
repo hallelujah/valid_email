@@ -1,0 +1,5 @@
+sv:
+  valid_email:
+    validations:
+      email:
+        invalid: "är ogiltig"

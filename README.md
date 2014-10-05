@@ -82,17 +82,23 @@ gem 'valid_email', require: ['valid_email/all_with_extensions']
 You will be able to use the following methods:
 ```ruby
 nil.email? # => false
-"jhon@gmail.com".email? # => May return true if it exists. It accepts a hash of options like ValidateEmail.valid?
+"john@gmail.com".email? # => May return true if it exists. It accepts a hash of options like ValidateEmail.valid?
 ```
 
 # Credits
 
-* Dush dusanek[at]iquest.cz
 * Ramihajamalala Hery hery[at]rails-royce.org
-* Marco Perrando mperrando[at]soluzioninrete.it
+* Fire-Dragon-DoL francesco.belladonna[at]gmail.com
+* dush dusanek[at]iquest.cz
 * MIke Carter mike[at]mcarter.me
-* Oleg Shur workshur[at]gmail.com
+* Heng heng[at]reamaze.com
+* Marco Perrando mperrando[at]soluzioninrete.it
 * Jörg Thalheim joerg[at]higgsboson.tk
+* Andrey Deryabin deriabin[at]gmail.com
+* Nicholas Rutherford nick.rutherford[at]gmail.com
+* Oleg Shur workshur[at]gmail.com
+* Joel Chippindale joel[at]joelchippindale.com
+* Sami Haahtinen sami[at]haahtinen.name
 * Jean Boussier jean.boussier[at]gmail.com
 
 # Note on Patches/Pull Requests

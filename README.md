@@ -85,6 +85,10 @@ nil.email? # => false
 "john@gmail.com".email? # => May return true if it exists. It accepts a hash of options like ValidateEmail.valid?
 ```
 
+## Code Status
+
+* [![Build Status](https://travis-ci.org/hallelujah/valid_email.svg?branch=master)](https://travis-ci.org/hallelujah/valid_email)
+
 # Credits
 
 * Ramihajamalala Hery hery[at]rails-royce.org

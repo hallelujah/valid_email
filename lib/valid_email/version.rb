@@ -1,1 +1,1 @@
-ValidEmailVersion = "0.0.8"
+ValidEmailVersion = "0.0.9"

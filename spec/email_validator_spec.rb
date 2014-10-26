@@ -106,6 +106,12 @@ describe EmailValidator do
         subject.errors[:email].should == errors
       end
 
+      it "should fail when domain contains a space" do
+        subject.email = 'john@doe .com'
+        subject.valid?.should be_falsey
+        subject.errors[:email].should == errors
+      end
+
       it "should fail when passing multiple simple email addresses" do
         subject.email = 'john@doe.com, maria@doe.com'
         subject.valid?.should be_falsey

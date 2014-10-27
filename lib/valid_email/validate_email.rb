@@ -16,12 +16,12 @@ class ValidateEmail
           # In mail 2.6.1, domains are invalid per rfc2822 are parsed when they shouldn't
           # This is to make sure we cover those cases
           domain_dot_elements = m.domain.split(/\./)
-          r &&= m.domain.match(/^\S+$/) && domain_dot_elements.none?(&:blank?) && domain_dot_elements.size > 1
+          r = m.domain.match(/^\S+$/) && domain_dot_elements.none?(&:blank?) && domain_dot_elements.size > 1
 
           # Check if domain has DNS MX record
           if r && options[:mx]
             require 'valid_email/mx_validator'
-            r &&= mx_valid?(email)
+            r = mx_valid?(email)
           end
         end
       rescue Mail::Field::ParseError

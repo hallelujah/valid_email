@@ -24,8 +24,8 @@ class ValidateEmail
             r = mx_valid?(email)
           end
 
-          # Check if the domain contains only word chars and dots
-          if (m.domain =~ /\A(\w|\.)*\Z/i).nil?
+          # Check if the domain contains only word chars and dots and dashes in between word chars
+          if (m.domain =~ /\A(?:\w+(?:\-+\w+)*\.)*(?:[a-z0-9][a-z0-9-]*[a-z0-9])\Z/i).nil?
             r = false
           end
         end

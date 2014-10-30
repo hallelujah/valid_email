@@ -118,6 +118,12 @@ describe EmailValidator do
         subject.errors[:email].should == errors
       end
 
+      it "should fail when passing an email address with an invalid domain" do
+        subject.email = 'john@doe.com$\''
+        subject.valid?.should be_false
+        subject.errors[:email].should == errors
+      end
+
     end
 
     describe "validating email with MX and fallback to A" do

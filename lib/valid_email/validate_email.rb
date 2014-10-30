@@ -1,5 +1,5 @@
 class ValidateEmail
-  
+
   class << self
 
     def valid?(value, user_options={})
@@ -22,6 +22,11 @@ class ValidateEmail
           if r && options[:mx]
             require 'valid_email/mx_validator'
             r = mx_valid?(email)
+          end
+
+          # Check if the domain contains only word chars and dots
+          if (m.domain =~ /\A(\w|\.)*\Z/i).nil?
+            r = false
           end
         end
       rescue Mail::Field::ParseError

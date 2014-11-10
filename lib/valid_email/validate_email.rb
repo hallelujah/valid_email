@@ -1,5 +1,5 @@
 class ValidateEmail
-  
+
   class << self
 
     def valid?(value, user_options={})
@@ -21,7 +21,7 @@ class ValidateEmail
           # Check if domain has DNS MX record
           if r && options[:mx]
             require 'valid_email/mx_validator'
-            r = mx_valid?(email)
+            r = mx_valid?(value)
           end
         end
       rescue Mail::Field::ParseError

@@ -85,6 +85,20 @@ nil.email? # => false
 "john@gmail.com".email? # => May return true if it exists. It accepts a hash of options like ValidateEmail.valid?
 ```
 
+## Caching MX lookups in Rails
+
+Doing lots of MX/DNS lookups is slow and for performace reasons its preferable to cache queries for each domain.
+
+You can create an initializer in your Rails app and configure how long you'd like to cache lookups for. Caching is turned off by default.
+
+```ruby
+# config/initializers/valid_email.rb
+
+ValidateEmail.configure do |config|
+  config.cache_mx_lookups_for = 5.hours
+end
+```
+
 ## Code Status
 
 * [![Build Status](https://travis-ci.org/hallelujah/valid_email.svg?branch=master)](https://travis-ci.org/hallelujah/valid_email)

@@ -18,6 +18,9 @@ class ValidateEmail
       domain_dot_elements = m.domain.split(/\./)
       return false unless domain_dot_elements.size > 1 && domain_dot_elements.all?(&:present?)
 
+      # Two dots next to each other or a dot at the beginning or end of the local part are not allowed by RFC2822.
+      return false unless m.local.split('.', -1).all?(&:present?)
+
       # Check if domain has DNS MX record
       if options[:mx]
         require 'valid_email/mx_validator'

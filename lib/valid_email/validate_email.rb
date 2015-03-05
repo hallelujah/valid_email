@@ -1,5 +1,15 @@
 class ValidateEmail
   class << self
+    attr_accessor :configuration
+
+    def configure
+      yield(configuration)
+    end
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
+
     def valid?(value, user_options={})
       options = { :mx => false, :message => nil }.merge(user_options)
 
@@ -36,13 +46,16 @@ class ValidateEmail
       m = Mail::Address.new(value)
       return false unless m.domain
 
-      mx = []
-      Resolv::DNS.open do |dns|
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
+      mx = if defined?(::Rails) && ValidateEmail.configuration.cache_mx_lookups_for.is_a?(Fixnum)
+        cache_key = ['valid_email/mx_valid?', m.domain, fallback]
+        Rails.cache.fetch(cache_key, expires_in: ValidateEmail.configuration.cache_mx_lookups_for) do
+          domain_mx_records(m.domain, fallback)
+        end
+      else
+        domain_mx_records(m.domain, fallback)
       end
 
-      return mx.any?
+      mx.any?
     rescue Mail::Field::ParseError
       false
     end
@@ -56,6 +69,25 @@ class ValidateEmail
       m.domain && !BanDisposableEmailValidator.config.include?(m.domain)
     rescue Mail::Field::ParseError
       false
+    end
+
+    def domain_mx_records(domain, fallback=false)
+      mx = []
+
+      Resolv::DNS.open do |dns|
+        mx.concat dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
+        mx.concat dns.getresources(domain, Resolv::DNS::Resource::IN::A) if fallback
+      end
+
+      return mx
+    end
+  end
+
+  class Configuration
+    attr_accessor :cache_mx_lookups_for
+
+    def initialize
+      @cache_mx_lookups_for = nil
     end
   end
 end

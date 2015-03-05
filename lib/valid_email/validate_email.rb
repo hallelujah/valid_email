@@ -27,6 +27,11 @@ class ValidateEmail
         return mx_valid?(value)
       end
 
+      # Check if the domain contains only word chars and dots
+      if (m.domain =~ /\A(\w|\.)*\Z/i).nil?
+        return false
+      end
+
       true
     rescue Mail::Field::ParseError
       false

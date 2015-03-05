@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 describe 'domain regex' do
   let(:regex) { /\A(?:\w+(?:\-+\w+)*\.)*(?:[a-z0-9][a-z0-9-]*[a-z0-9])\Z/i }
 

@@ -55,7 +55,7 @@ describe ValidateEmail do
       ValidateEmail.valid_local?('"\\\\"').should be_truthy
       ValidateEmail.valid_local?('test."te@st".test').should be_truthy
       ValidateEmail.valid_local?('test."\\\\\"".test').should be_truthy
-      ValidateEmail.valid_local?('test."blah\"\ \\"')
+      ValidateEmail.valid_local?('test."blah\"\ \\\\"').should be_truthy
     end
 
     it 'should return true if all characters are within the set of allowed characters' do

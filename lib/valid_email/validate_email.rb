@@ -1,7 +1,7 @@
 class ValidateEmail
   class << self
-    SPECIAL_CHARS = ['(', ')', ',', ':', ';', '<', '>', '@', '[', ']']
-    SPECIAL_ESCAPED_CHARS = [' ', '\\', '"']
+    SPECIAL_CHARS = %w(( ) , : ; < > @ [ ])
+    SPECIAL_ESCAPED_CHARS = %w(\  \\ ")
     LOCAL_MAX_LEN = 64
 
     def valid?(value, user_options={})

@@ -3,9 +3,14 @@ class ValidateEmail
     SPECIAL_CHARS = %w(( ) , : ; < > @ [ ])
     SPECIAL_ESCAPED_CHARS = %w(\  \\ ")
     LOCAL_MAX_LEN = 64
+    DOMAIN_REGEX = /\A^([[:alpha:]]{1}|([[:alnum:]][a-zA-Z0-9-]{0,61}[[:alnum:]]))(\.([[:alnum:]][a-zA-Z0-9-]{0,61}[[:alnum:]]))+\z/
 
     def valid?(value, user_options={})
-      options = { :mx => false, :message => nil }.merge(user_options)
+      options = {
+        :mx => false,
+        :domain => false,
+        :message => nil
+      }.merge(user_options)
 
       m = Mail::Address.new(value)
       # We must check that value contains a domain and that value is an email address
@@ -29,6 +34,11 @@ class ValidateEmail
       if options[:mx]
         require 'valid_email/mx_validator'
         return mx_valid?(value)
+      end
+
+      if options[:domain]
+        require 'valid_email/domain_validator'
+        return domain_valid?(value)
       end
 
       true
@@ -65,7 +75,7 @@ class ValidateEmail
         # If we're not in a quoted dot atom then no special characters are allowed.
         return false unless ((SPECIAL_CHARS | SPECIAL_ESCAPED_CHARS) & dot_atom.split('')).empty?
       end
-      return true 
+      return true
     end
 
     def mx_valid?(value, fallback=false)
@@ -85,6 +95,13 @@ class ValidateEmail
 
     def mx_valid_with_fallback?(value)
       mx_valid?(value, true)
+    end
+
+    def domain_valid?(value)
+      m = Mail::Address.new(value)
+      return false unless m.domain
+
+      !(m.domain =~ DOMAIN_REGEX).nil?
     end
 
     def ban_disposable_email?(value)

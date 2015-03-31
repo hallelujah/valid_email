@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe ValidateEmail do
@@ -19,6 +20,34 @@ describe ValidateEmail do
 
       it "should return false when mx record doesn't exist" do
         ValidateEmail.valid?('user@example.com', mx: true).should be_falsey
+      end
+    end
+
+    context 'when domain: true option passed' do
+      it 'should return true when the domain is valid' do
+        ValidateEmail.valid?('john@example.org', domain: true).should be_truthy
+      end
+
+      context 'with invalid domain' do
+        invalid_domains = [
+          '-eouae.test',
+          'oue-.test',
+          'oeuoue.-oeuoue',
+          'oueaaoeu.oeue-',
+          'ouoeu.eou_ueoe',
+          'тест.рф',
+          '.test.com',
+          'test..com',
+          'test@test.com',
+          "example.org$\'",
+        ]
+
+        invalid_domains.each do |invalid_domain|
+          it "should return false for #{invalid_domain}" do
+            email = "john@#{invalid_domain}"
+            ValidateEmail.valid?(email, domain: true).should be_falsey
+          end
+        end
       end
     end
   end

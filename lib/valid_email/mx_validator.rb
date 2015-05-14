@@ -1,6 +1,5 @@
 require 'active_model'
 require 'active_model/validations'
-require 'mail'
 require 'resolv'
 require 'valid_email/validate_email'
 class MxValidator < ActiveModel::EachValidator

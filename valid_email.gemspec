@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://my.rails-royce.org/2010/07/21/email-validation-in-ruby-on-rails-without-regexp"
   s.summary     = %q{ActiveModel Validation for email}
   s.description = %q{ActiveModel Validation for email}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "valid_email"
 

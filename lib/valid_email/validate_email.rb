@@ -46,6 +46,12 @@ class ValidateEmail
       true
     rescue Mail::Field::ParseError
       false
+    rescue ArgumentError => error
+      if error.message == 'bad value for range'
+        false
+      else
+        raise error
+      end
     end
 
     def valid_local?(local)

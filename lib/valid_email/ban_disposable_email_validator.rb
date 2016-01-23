@@ -1,6 +1,5 @@
 require 'active_model'
 require 'active_model/validations'
-require 'mail'
 require 'valid_email/validate_email'
 class BanDisposableEmailValidator < ActiveModel::EachValidator
   # A list of disposable email domains

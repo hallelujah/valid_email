@@ -1,3 +1,5 @@
+require 'mail'
+
 class ValidateEmail
   class << self
     SPECIAL_CHARS = %w(( ) , : ; < > @ [ ])

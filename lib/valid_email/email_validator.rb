@@ -1,6 +1,5 @@
 require 'active_model'
 require 'active_model/validations'
-require 'mail'
 require 'valid_email/validate_email'
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record,attribute,value)

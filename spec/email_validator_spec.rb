@@ -58,8 +58,8 @@ describe EmailValidator do
   shared_examples_for "Invalid model" do
     before { subject.valid? }
 
-    it { should_not be_valid }
-    specify { subject.errors[:email].should =~ errors }
+    it { is_expected.not_to be_valid }
+    specify { expect(subject.errors[:email]).to match_array errors }
   end
 
   shared_examples_for "Validating emails" do
@@ -71,57 +71,57 @@ describe EmailValidator do
     describe "validating email" do
       subject { person_class.new }
 
-      it "should fail when email empty" do
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+      it "fails when email empty" do
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when email is not valid" do
+      it "fails when email is not valid" do
         subject.email = 'joh@doe'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when email domain is prefixed with dot" do
+      it "fails when email domain is prefixed with dot" do
         subject.email = 'john@.doe'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when email domain contains two consecutive dots" do
+      it "fails when email domain contains two consecutive dots" do
         subject.email = 'john@doe-two..com'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when email is valid with information" do
+      it "fails when email is valid with information" do
         subject.email = '"John Doe" <john@doe.com>'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should pass when email is simple email address" do
+      it "passes when email is simple email address" do
         subject.email = 'john@doe.com'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
 
-      it "should fail when email is simple email address not stripped" do
+      it "fails when email is simple email address not stripped" do
         subject.email = 'john@doe.com            '
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when domain contains a space" do
+      it "fails when domain contains a space" do
         subject.email = 'john@doe .com'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when passing multiple simple email addresses" do
+      it "fails when passing multiple simple email addresses" do
         subject.email = 'john@doe.com, maria@doe.com'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
     end
@@ -129,44 +129,44 @@ describe EmailValidator do
     describe "validating email with MX and fallback to A" do
       subject { person_class_mx_with_fallback.new }
 
-      it "should pass when email domain has MX record" do
+      it "passes when email domain has MX record" do
         subject.email = 'john@gmail.com'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
 
-      it "should pass when email domain has no MX record but has an A record" do
+      it "passes when email domain has no MX record but has an A record" do
         subject.email = 'john@subdomain.rubyonrails.org'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
 
-      it "should fail when domain does not exists" do
+      it "fails when domain does not exists" do
         subject.email = 'john@nonexistentdomain.abc'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
     end
 
     describe "validating email with MX" do
       subject { person_class_mx.new }
 
-      it "should pass when email domain has MX record" do
+      it "passes when email domain has MX record" do
         subject.email = 'john@gmail.com'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
 
-      it "should fail when email domain has no MX record" do
+      it "fails when email domain has no MX record" do
         subject.email = 'john@subdomain.rubyonrails.org'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should fail when domain does not exists" do
+      it "fails when domain does not exists" do
         subject.email = 'john@nonexistentdomain.abc'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
     end
 
@@ -175,12 +175,12 @@ describe EmailValidator do
 
       context "when domain is not specified" do
         before { subject.email = 'john' }
-        it_should_behave_like "Invalid model"
+        it_behaves_like "Invalid model"
       end
 
       context "when domain is not specified but @ is" do
         before { subject.email = 'john@' }
-        it_should_behave_like "Invalid model"
+        it_behaves_like "Invalid model"
       end
     end
 
@@ -189,44 +189,44 @@ describe EmailValidator do
 
       context "when domain is not specified" do
         before { subject.email = 'john' }
-        it_should_behave_like "Invalid model"
+        it_behaves_like "Invalid model"
       end
 
       context "when domain is not specified but @ is" do
         before { subject.email = 'john@' }
-        it_should_behave_like "Invalid model"
+        it_behaves_like "Invalid model"
       end
     end
 
     describe "validating email from disposable service" do
       subject { person_class_disposable_email.new }
 
-      it "should pass when email from trusted email services" do
+      it "passes when email from trusted email services" do
         subject.email = 'john@mail.ru'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
 
-      it "should fail when email from disposable email services" do
+      it "fails when email from disposable email services" do
         subject.email = 'john@grr.la'
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
     end
 
     describe "validating domain" do
       subject { person_class_domain.new }
 
-      it "should not pass with an invalid domain" do
+      it "does not pass with an invalid domain" do
         subject.email = "test@example.org$\'"
-        subject.valid?.should be_falsey
-        subject.errors[:email].should == errors
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
 
-      it "should pass with valid domain" do
+      it "passes with valid domain" do
         subject.email = 'john@example.org'
-        subject.valid?.should be_truthy
-        subject.errors[:email].should be_empty
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
       end
     end
   end
@@ -234,10 +234,10 @@ describe EmailValidator do
   describe "Can allow nil" do
     subject { person_class_nil_allowed.new }
 
-    it "should pass even if mail isn't set" do
+    it "passes even if mail isn't set" do
       subject.email = nil
-      subject.should be_valid
-      subject.errors[:email].should be_empty
+      expect(subject).to be_valid
+      expect(subject.errors[:email]).to be_empty
     end
 
   end
@@ -245,10 +245,10 @@ describe EmailValidator do
   describe "Can allow blank" do
     subject { person_class_blank_allowed.new }
 
-    it "should pass even if mail is a blank string set" do
+    it "passes even if mail is a blank string set" do
       subject.email = ''
-      subject.should be_valid
-      subject.errors[:email].should be_empty
+      expect(subject).to be_valid
+      expect(subject.errors[:email]).to be_empty
     end
 
   end
@@ -256,13 +256,13 @@ describe EmailValidator do
   describe "Translating in english" do
     let!(:locale){ :en }
     let!(:errors) { [ "is invalid" ] }
-    it_should_behave_like "Validating emails"
+    it_behaves_like "Validating emails"
   end
 
   describe "Translating in french" do
     let!(:locale){ :fr }
 
     let!(:errors) { [ "est invalide" ] }
-    it_should_behave_like "Validating emails"
+    it_behaves_like "Validating emails"
   end
 end

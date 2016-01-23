@@ -3,20 +3,20 @@ require 'valid_email/all_with_extensions'
 
 describe String do
 
-  it { "mymail@gmail".should respond_to(:email?) }
+  it { expect("mymail@gmail").to respond_to(:email?) }
 
   it "is a valid e-mail" do
-    "mymail@gmail.com".email?.should be_truthy
+    expect("mymail@gmail.com".email?).to be_truthy
   end
 
   it "is not valid when text is not a real e-mail" do
-    "invalidMail".email?.should be_falsey
+    expect("invalidMail".email?).to be_falsey
   end
 
   context "when nil" do
 
     it "is invalid e-mail" do
-      nil.email?.should be_falsey
+      expect(nil.email?).to be_falsey
     end
 
   end

@@ -3,24 +3,24 @@ require 'spec_helper'
 
 describe ValidateEmail do
   describe '.valid?' do
-    it 'should return true when passed email has valid format' do
-      ValidateEmail.valid?('user@gmail.com').should be_truthy
-      ValidateEmail.valid?('valid.user@gmail.com').should be_truthy
+    it 'returns true when passed email has valid format' do
+      expect(ValidateEmail.valid?('user@gmail.com')).to be_truthy
+      expect(ValidateEmail.valid?('valid.user@gmail.com')).to be_truthy
     end
 
-    it 'should return false when passed email has invalid format' do
-      ValidateEmail.valid?('user@gmail.com.').should be_falsey
-      ValidateEmail.valid?('user.@gmail.com').should be_falsey
-      ValidateEmail.valid?('Hgft@(()).com').should be_falsey
+    it 'returns false when passed email has invalid format' do
+      expect(ValidateEmail.valid?('user@gmail.com.')).to be_falsey
+      expect(ValidateEmail.valid?('user.@gmail.com')).to be_falsey
+      expect(ValidateEmail.valid?('Hgft@(()).com')).to be_falsey
     end
 
     context 'when mx: true option passed' do
-      it 'should return true when mx record exist' do
-        ValidateEmail.valid?('user@gmail.com', mx: true).should be_truthy
+      it 'returns true when mx record exist' do
+        expect(ValidateEmail.valid?('user@gmail.com', mx: true)).to be_truthy
       end
 
-      it "should return false when mx record doesn't exist" do
-        ValidateEmail.valid?('user@example.com', mx: true).should be_falsey
+      it "returns false when mx record doesn't exist" do
+        expect(ValidateEmail.valid?('user@example.com', mx: true)).to be_falsey
       end
     end
 
@@ -45,9 +45,9 @@ describe ValidateEmail do
         ]
 
         valid_domains.each do |valid_domain|
-          it "should return true for #{valid_domain}" do
+          it "returns true for #{valid_domain}" do
             email = "john@#{valid_domain}"
-            ValidateEmail.valid?(email, domain: true).should be_truthy
+            expect(ValidateEmail.valid?(email, domain: true)).to be_truthy
           end
         end
       end
@@ -67,9 +67,9 @@ describe ValidateEmail do
         ]
 
         invalid_domains.each do |invalid_domain|
-          it "should return false for #{invalid_domain}" do
+          it "returns false for #{invalid_domain}" do
             email = "john@#{invalid_domain}"
-            ValidateEmail.valid?(email, domain: true).should be_falsey
+            expect(ValidateEmail.valid?(email, domain: true)).to be_falsey
           end
         end
       end
@@ -77,42 +77,44 @@ describe ValidateEmail do
   end
 
   describe '.valid_local?' do
-    it 'should return false if the local segment is too long' do
-      ValidateEmail.valid_local?(
-        'abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde'
-      ).should be_falsey
+    it 'returns false if the local segment is too long' do
+      expect(
+        ValidateEmail.valid_local?(
+          'abcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcdeabcde'
+        )
+      ).to be_falsey
     end
 
-    it 'should return false if the local segment has an empty dot atom' do
-      ValidateEmail.valid_local?('.user').should be_falsey
-      ValidateEmail.valid_local?('.user.').should be_falsey
-      ValidateEmail.valid_local?('user.').should be_falsey
-      ValidateEmail.valid_local?('us..er').should be_falsey
+    it 'returns false if the local segment has an empty dot atom' do
+      expect(ValidateEmail.valid_local?('.user')).to be_falsey
+      expect(ValidateEmail.valid_local?('.user.')).to be_falsey
+      expect(ValidateEmail.valid_local?('user.')).to be_falsey
+      expect(ValidateEmail.valid_local?('us..er')).to be_falsey
     end
 
-    it 'should return false if the local segment has a special character in an unquoted dot atom' do
-      ValidateEmail.valid_local?('us@er').should be_falsey
-      ValidateEmail.valid_local?('user.\\.name').should be_falsey
-      ValidateEmail.valid_local?('user."name').should be_falsey
+    it 'returns false if the local segment has a special character in an unquoted dot atom' do
+      expect(ValidateEmail.valid_local?('us@er')).to be_falsey
+      expect(ValidateEmail.valid_local?('user.\\.name')).to be_falsey
+      expect(ValidateEmail.valid_local?('user."name')).to be_falsey
     end
 
-    it 'should return false if the local segment has an unescaped special character in a quoted dot atom' do
-      ValidateEmail.valid_local?('test." test".test').should be_falsey
-      ValidateEmail.valid_local?('test."test\".test').should be_falsey
-      ValidateEmail.valid_local?('test."te"st".test').should be_falsey
-      ValidateEmail.valid_local?('test."\".test').should be_falsey
+    it 'returns false if the local segment has an unescaped special character in a quoted dot atom' do
+      expect(ValidateEmail.valid_local?('test." test".test')).to be_falsey
+      expect(ValidateEmail.valid_local?('test."test\".test')).to be_falsey
+      expect(ValidateEmail.valid_local?('test."te"st".test')).to be_falsey
+      expect(ValidateEmail.valid_local?('test."\".test')).to be_falsey
     end
 
-    it 'should return true if special characters exist but are properly quoted and escaped' do
-      ValidateEmail.valid_local?('"\ test"').should be_truthy
-      ValidateEmail.valid_local?('"\\\\"').should be_truthy
-      ValidateEmail.valid_local?('test."te@st".test').should be_truthy
-      ValidateEmail.valid_local?('test."\\\\\"".test').should be_truthy
-      ValidateEmail.valid_local?('test."blah\"\ \\\\"').should be_truthy
+    it 'returns true if special characters exist but are properly quoted and escaped' do
+      expect(ValidateEmail.valid_local?('"\ test"')).to be_truthy
+      expect(ValidateEmail.valid_local?('"\\\\"')).to be_truthy
+      expect(ValidateEmail.valid_local?('test."te@st".test')).to be_truthy
+      expect(ValidateEmail.valid_local?('test."\\\\\"".test')).to be_truthy
+      expect(ValidateEmail.valid_local?('test."blah\"\ \\\\"')).to be_truthy
     end
 
-    it 'should return true if all characters are within the set of allowed characters' do
-      ValidateEmail.valid_local?('!#$%&\'*+-/=?^_`{|}~."\\\\\ \"(),:;<>@[]"').should be_truthy
+    it 'returns true if all characters are within the set of allowed characters' do
+      expect(ValidateEmail.valid_local?('!#$%&\'*+-/=?^_`{|}~."\\\\\ \"(),:;<>@[]"')).to be_truthy
     end
   end
 end

@@ -20,6 +20,9 @@ class EmailValidator < ActiveModel::EachValidator
       require 'valid_email/ban_disposable_email_validator'
       r = BanDisposableEmailValidator.new(:attributes => attributes).validate(record)
     end
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+    unless r
+      msg = (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email"))
+      record.errors.add attribute, (msg % {value: value})
+    end  
   end
 end

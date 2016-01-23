@@ -49,6 +49,12 @@ describe EmailValidator do
     validates :email, :mx_with_fallback => true
   end
 
+  person_class_domain = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :domain => true
+  end
+
   shared_examples_for "Invalid model" do
     before { subject.valid? }
 
@@ -208,6 +214,21 @@ describe EmailValidator do
       end
     end
 
+    describe "validating domain" do
+      subject { person_class_domain.new }
+
+      it "should not pass with an invalid domain" do
+        subject.email = "test@example.org$\'"
+        subject.valid?.should be_falsey
+        subject.errors[:email].should == errors
+      end
+
+      it "should pass with valid domain" do
+        subject.email = 'john@example.org'
+        subject.valid?.should be_truthy
+        subject.errors[:email].should be_empty
+      end
+    end
   end
 
   describe "Can allow nil" do

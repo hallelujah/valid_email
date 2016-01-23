@@ -32,13 +32,17 @@ In your code :
     p.email = "John Does <john@doe.com>"
     p.valid? # => false
 
-You can check if email domain has MX record :
+You can check if email domain has MX record:
 
     validates :email, :email => {:mx => true, :message => I18n.t('validations.errors.models.user.invalid_email')}
 
 Or
 
     validates :email, :email => {:message => I18n.t('validations.errors.models.user.invalid_email')}, :mx => {:message => I18n.t('validations.errors.models.user.invalid_mx')}
+
+You can check if the email domain looks valid. This uses a regular expression so no external services are required, which improves the performance of this check:
+
+    validates :email, :email => {:domain => true}
 
 Alternatively, you can check if an email domain has a MX or A record by using `:mx_with_fallback` instead of `:mx`.
 

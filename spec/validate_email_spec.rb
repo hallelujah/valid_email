@@ -11,6 +11,7 @@ describe ValidateEmail do
     it 'should return false when passed email has invalid format' do
       ValidateEmail.valid?('user@gmail.com.').should be_falsey
       ValidateEmail.valid?('user.@gmail.com').should be_falsey
+      ValidateEmail.valid?('Hgft@(()).com').should be_falsey
     end
 
     context 'when mx: true option passed' do

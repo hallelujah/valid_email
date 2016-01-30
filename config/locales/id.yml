@@ -1,0 +1,5 @@
+id:
+  valid_email:
+    validations:
+      email:
+        invalid: "tidak valid"

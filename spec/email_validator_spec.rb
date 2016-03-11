@@ -55,6 +55,12 @@ describe EmailValidator do
     validates :email, :domain => true
   end
 
+  person_message_specified = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => { :message => 'custom message', :ban_disposable_email => true }
+  end
+
   shared_examples_for "Invalid model" do
     before { subject.valid? }
 
@@ -239,7 +245,6 @@ describe EmailValidator do
       expect(subject).to be_valid
       expect(subject.errors[:email]).to be_empty
     end
-
   end
 
   describe "Can allow blank" do
@@ -250,7 +255,16 @@ describe EmailValidator do
       expect(subject).to be_valid
       expect(subject.errors[:email]).to be_empty
     end
+  end
 
+  describe "Accepts custom messages" do
+    subject { person_message_specified.new }
+
+    it "adds only the custom error" do
+      subject.email = 'bad@mailnator.com'
+      expect(subject.valid?).to be_falsey
+      expect(subject.errors[:email]).to match_array [ 'custom message' ]
+    end
   end
 
   describe "Translating in english" do
@@ -261,7 +275,6 @@ describe EmailValidator do
 
   describe "Translating in french" do
     let!(:locale){ :fr }
-
     let!(:errors) { [ "est invalide" ] }
     it_behaves_like "Validating emails"
   end

@@ -92,6 +92,7 @@ class ValidateEmail
 
       mx = []
       Resolv::DNS.open do |dns|
+        dns.timeouts = ValidEmail.resolv_dns_timeouts
         mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
         mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
       end

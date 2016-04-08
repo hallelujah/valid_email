@@ -70,8 +70,11 @@ describe EmailValidator do
 
   shared_examples_for "Validating emails" do
 
+    let(:timeouts) { 1 }
+
     before :each do
       I18n.locale = locale
+      allow(ValidEmail).to receive(:resolv_dns_timeouts).and_return timeouts
     end
 
     describe "validating email" do
@@ -166,6 +169,7 @@ describe EmailValidator do
       it "fails when email domain has no MX record" do
         subject.email = 'john@subdomain.rubyonrails.org'
         expect(subject.valid?).to be_falsey
+
         expect(subject.errors[:email]).to eq errors
       end
 
@@ -173,6 +177,14 @@ describe EmailValidator do
         subject.email = 'john@nonexistentdomain.abc'
         expect(subject.valid?).to be_falsey
         expect(subject.errors[:email]).to eq errors
+      end
+
+      describe "Resolv::DNS.timeouts" do
+        it "sets the timeouts on the DNS" do
+          expect_any_instance_of(Resolv::DNS).to receive(:timeouts=).with(timeouts)
+          subject.email = 'john@gmail.com'
+          subject.valid?
+        end
       end
     end
 

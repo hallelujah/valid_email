@@ -91,13 +91,20 @@ class ValidateEmail
       return false unless m.domain
 
       mx = []
-      Resolv::DNS.open do |dns|
-        dns.timeouts = ValidEmail.resolv_dns_timeouts
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
+      dns = Resolv::DNS.new
+      begin
+        Timeout.timeout(ValidEmail.dns_timeout) do
+          mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
+          mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
+        end
+      rescue Timeout::Error
+        dns.close
+        return ValidEmail.dns_timeout_return_value
       end
 
+      dns.close
       return mx.any?
+
     rescue Mail::Field::ParseError
       false
     end

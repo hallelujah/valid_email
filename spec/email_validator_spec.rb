@@ -52,6 +52,12 @@ describe EmailValidator do
   person_class_domain = Class.new do
     include ActiveModel::Validations
     attr_accessor :email
+    validates :email, :email => { :domain => true }
+  end
+
+  person_class_domain_separated = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
     validates :email, :domain => true
   end
 
@@ -233,6 +239,30 @@ describe EmailValidator do
         subject.email = 'john@example.org'
         expect(subject.valid?).to be_truthy
         expect(subject.errors[:email]).to be_empty
+      end
+    end
+
+    describe "validating domain separately" do
+      subject { person_class_domain_separated.new }
+
+      it "does not pass with an invalid domain" do
+        subject.email = "test@example.org$\'"
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
+      end
+
+      it "passes with valid domain" do
+        subject.email = 'john@example.org'
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
+      end
+
+      context 'with a mail that would raise a parsing error' do
+        it 'does not raise' do
+          subject.email = '@example.org'
+          expect(subject.valid?).to be_falsey
+          expect { subject.valid? }.not_to raise_error
+        end
       end
     end
   end

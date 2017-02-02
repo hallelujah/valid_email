@@ -34,12 +34,10 @@ class ValidateEmail
 
       # Check if domain has DNS MX record
       if options[:mx]
-        require 'valid_email/mx_validator'
         return mx_valid?(value)
       end
 
       if options[:domain]
-        require 'valid_email/domain_validator'
         return domain_valid?(value)
       end
 
@@ -58,7 +56,7 @@ class ValidateEmail
       return false unless local.length <= LOCAL_MAX_LEN
       # Emails can be validated by segments delineated by '.', referred to as dot atoms.
       # See http://tools.ietf.org/html/rfc5322#section-3.2.3
-      return local.split('.', -1).all? { |da| valid_dot_atom?(da) }
+      local.split('.', -1).all? { |da| valid_dot_atom?(da) }
     end
 
     def valid_dot_atom?(dot_atom)
@@ -83,7 +81,7 @@ class ValidateEmail
         # If we're not in a quoted dot atom then no special characters are allowed.
         return false unless ((SPECIAL_CHARS | SPECIAL_ESCAPED_CHARS) & dot_atom.split('')).empty?
       end
-      return true
+      true
     end
 
     def mx_valid?(value, fallback=false)
@@ -110,6 +108,8 @@ class ValidateEmail
       return false unless m.domain
 
       !(m.domain =~ DOMAIN_REGEX).nil?
+    rescue Mail::Field::ParseError
+      false
     end
 
     def ban_disposable_email?(value)

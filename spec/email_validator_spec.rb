@@ -166,6 +166,7 @@ describe EmailValidator do
       it "fails when email domain has no MX record" do
         subject.email = 'john@subdomain.rubyonrails.org'
         expect(subject.valid?).to be_falsey
+
         expect(subject.errors[:email]).to eq errors
       end
 

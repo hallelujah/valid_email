@@ -118,4 +118,29 @@ describe ValidateEmail do
       expect(ValidateEmail.valid_local?('!#$%&\'*+-/=?^_`{|}~."\\\\\ \"(),:;<>@[]"')).to be_truthy
     end
   end
+
+  describe '.mx_valid?' do
+    let(:dns) { double(Resolv::DNS) }
+    let(:dns_resource) { double(Resolv::DNS::Resource::IN::MX) }
+
+    before do
+      expect(Resolv::DNS).to receive(:new).and_return(dns)
+      expect(dns).to receive(:close)
+    end
+
+    it "returns true when MX is true and it doesn't timeout" do
+      expect(dns).to receive(:getresources).and_return [dns_resource]
+      expect(ValidateEmail.mx_valid?('aloha@kmkonline.co.id')).to be_truthy
+    end
+
+    it "returns false when MX is false and it doesn't timeout" do
+      expect(dns).to receive(:getresources).and_return []
+      expect(ValidateEmail.mx_valid?('aloha@ga-ada-mx.com')).to be_falsey
+    end
+
+    it "returns config.default when times out", focus: true do
+      Timeout.should_receive(:timeout).and_raise(Timeout::Error)
+      expect(ValidateEmail.mx_valid?('aloha@ga-ada-mx.com')).to eq(ValidEmail.dns_timeout_return_value)
+    end
+  end
 end

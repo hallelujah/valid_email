@@ -1,3 +1,4 @@
+resolv_dns_timeouts: 0.05
 disposable_email_services:
   - mailinator.com
   - devnullmail.com

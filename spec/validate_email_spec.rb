@@ -64,6 +64,7 @@ describe ValidateEmail do
           'test..com',
           'test@test.com',
           "example.org$\'",
+          "foo bar.com",
         ]
 
         invalid_domains.each do |invalid_domain|

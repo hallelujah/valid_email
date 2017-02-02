@@ -110,6 +110,9 @@ class ValidateEmail
       return false unless m.domain
 
       !(m.domain =~ DOMAIN_REGEX).nil?
+
+    rescue Mail::Field::ParseError
+      false
     end
 
     def ban_disposable_email?(value)

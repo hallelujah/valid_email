@@ -92,6 +92,7 @@ class ValidateEmail
 
       mx = []
       Resolv::DNS.open do |dns|
+        dns.timeouts = MxValidator.config[:timeouts] unless MxValidator.config[:timeouts].empty?
         mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
         mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
       end

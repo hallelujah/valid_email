@@ -1,0 +1,5 @@
+pt-BR:
+  valid_email:
+    validations:
+      email:
+        invalid: "é inválido"

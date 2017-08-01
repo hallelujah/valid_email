@@ -100,6 +100,18 @@ describe EmailValidator do
         expect(subject.errors[:email]).to eq errors
       end
 
+      it "fails when email ends with a period" do
+        subject.email = 'john@doe.com.'
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
+      end
+
+      it "fails when email ends with special characters" do
+        subject.email = 'john@doe.com&'
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
+      end
+
       it "fails when email is valid with information" do
         subject.email = '"John Doe" <john@doe.com>'
         expect(subject.valid?).to be_falsey

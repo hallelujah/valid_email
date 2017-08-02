@@ -10,7 +10,7 @@ class ValidateEmail
     def valid?(value, user_options={})
       options = {
         :mx => false,
-        :domain => false,
+        :domain => true,
         :message => nil
       }.merge(user_options)
 

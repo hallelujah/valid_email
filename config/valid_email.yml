@@ -1,16 +1,4 @@
 disposable_email_services:
-  - mailinator.com
-  - devnullmail.com
-  - daddymail.biz
-  - grr.la
-  - drdrb.net
-  - getairmail.com
-  - evopo.com
-  - 6paq.com
-  - paplease.com
-  - acentri.com
-  - droplar.com
-  - appixie.com
   - 0-mail.com
   - 0815.ru
   - 0clickemail.com
@@ -29,21 +17,18 @@ disposable_email_services:
   - 675hosting.com
   - 675hosting.net
   - 675hosting.org
+  - 6paq.com
   - 6url.com
   - 75hosting.com
   - 75hosting.net
   - 75hosting.org
   - 7tags.com
   - 9ox.net
-  - disposableemailaddresses.com
-  - putthisinyourspamdatabase.com
-  - sendspamhere.com
-  - spamherelots.com
-  - spamhereplease.com
-  - tempemail.net
   - a-bc.net
+  - acentri.com
   - afrobacon.com
   - ajaxapp.net
+  - amail.club
   - amail4.me
   - amilegit.com
   - amiri.net
@@ -53,8 +38,11 @@ disposable_email_services:
   - antichef.com
   - antichef.net
   - antispam.de
+  - appixie.com
   - armyspy.com
   - azmeil.tk
+  - banit.club
+  - banit.me
   - baxomale.ht.cx
   - beefmilk.com
   - binkmail.com
@@ -69,11 +57,13 @@ disposable_email_services:
   - bsnow.net
   - bugmenot.com
   - bumpymail.com
+  - cars2.club
   - casualdx.com
   - centermail.com
   - centermail.net
   - chogmail.com
   - choicemail1.com
+  - cmail.club
   - cool.fr.nf
   - correo.blogos.net
   - cosmorph.com
@@ -84,17 +74,20 @@ disposable_email_services:
   - cust.in
   - cuvox.de
   - dacoolest.com
+  - daddymail.biz
   - dandikmail.com
   - dayrep.com
   - deadaddress.com
   - deadspam.com
   - despam.it
   - despammed.com
+  - devnullmail.com
   - dfgh.net
   - digitalsanctuary.com
   - discardmail.com
   - discardmail.de
   - disposableaddress.com
+  - disposableemailaddresses.com
   - disposeamail.com
   - disposemail.com
   - dispostable.com
@@ -106,6 +99,9 @@ disposable_email_services:
   - dontreg.com
   - dontsendmespam.de
   - drdrb.com
+  - drdrb.net
+  - droplar.com
+  - duck2.club
   - dump-email.info
   - dumpandjunk.com
   - dumpmail.de
@@ -132,6 +128,7 @@ disposable_email_services:
   - etranquil.com
   - etranquil.net
   - etranquil.org
+  - evopo.com
   - explodemail.com
   - fakeinbox.com
   - fakeinformation.com
@@ -156,6 +153,8 @@ disposable_email_services:
   - garliclife.com
   - get1mail.com
   - get2mail.fr
+  - getairmail.com
+  - getnada.com
   - getonemail.com
   - getonemail.net
   - ghosttexter.de
@@ -172,6 +171,7 @@ disposable_email_services:
   - gowikitv.com
   - great-host.in
   - greensloth.com
+  - grr.la
   - gsrv.co.uk
   - guerillamail.biz
   - guerillamail.com
@@ -258,6 +258,7 @@ disposable_email_services:
   - mailhz.me
   - mailin8r.com
   - mailinater.com
+  - mailinator.com
   - mailinator.net
   - mailinator2.com
   - mailincubator.com
@@ -296,6 +297,8 @@ disposable_email_services:
   - myspacepimpedup.com
   - myspamless.com
   - mytrashmail.com
+  - nada.email
+  - nada.ltd
   - neomailbox.com
   - nepwk.com
   - nervmich.net
@@ -333,6 +336,7 @@ disposable_email_services:
   - ovpn.to
   - owlpic.com
   - pancakemail.com
+  - paplease.com
   - pimpedupmyspace.com
   - pjjkp.com
   - politikerclub.de
@@ -342,6 +346,7 @@ disposable_email_services:
   - proxymail.eu
   - prtnx.com
   - punkass.com
+  - putthisinyourspamdatabase.com
   - qq.com
   - quickinbox.com
   - rcpt.at
@@ -363,6 +368,7 @@ disposable_email_services:
   - sandelf.de
   - saynotospams.com
   - selfdestructingmail.com
+  - sendspamhere.com
   - sharklasers.com
   - shiftmail.com
   - shitmail.me
@@ -410,6 +416,8 @@ disposable_email_services:
   - spamgourmet.com
   - spamgourmet.net
   - spamgourmet.org
+  - spamherelots.com
+  - spamhereplease.com
   - spamhole.com
   - spamify.com
   - spaminator.de
@@ -437,6 +445,7 @@ disposable_email_services:
   - tempe-mail.com
   - tempemail.biz
   - tempemail.com
+  - tempemail.net
   - tempinbox.co.uk
   - tempinbox.com
   - tempmail.it
@@ -497,6 +506,7 @@ disposable_email_services:
   - whyspam.me
   - willselfdestruct.com
   - winemaven.info
+  - wmail.club
   - wronghead.com
   - wuzup.net
   - wuzupmail.net
@@ -519,14 +529,4 @@ disposable_email_services:
   - zippymail.info
   - zoaxe.com
   - zoemail.org
-  - amail.club
-  - cmail.club
-  - wmail.club
-  - duck2.club
-  - cars2.club
-  - banit.club
-  - banit.me
-  - nada.ltd
-  - nada.email
-  - getnada.com
   -

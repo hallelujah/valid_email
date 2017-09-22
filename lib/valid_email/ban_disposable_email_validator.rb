@@ -16,7 +16,8 @@ class BanDisposableEmailValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
     r = ValidateEmail.ban_disposable_email?(value)
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+    message = Message.new(options[:message]).result
+    record.errors.add attribute, (message || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
 
     r
   end

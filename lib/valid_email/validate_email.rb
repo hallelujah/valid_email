@@ -14,6 +14,7 @@ class ValidateEmail
         :message => nil
       }.merge(user_options)
 
+      options[:message] = Message.new(options[:message]).result
       m = Mail::Address.new(value)
       # We must check that value contains a domain and that value is an email address
       return false unless m.domain && m.address == value

@@ -61,6 +61,12 @@ describe EmailValidator do
     validates :email, :email => { :message => 'custom message', :ban_disposable_email => true }
   end
 
+  proc_custom_message = Class.new do
+    include ActiveModel::Validations
+    attr_accessor :email
+    validates :email, :email => { :message => Proc.new { 'my custom message' } }
+  end
+
   shared_examples_for "Invalid model" do
     before { subject.valid? }
 
@@ -276,6 +282,16 @@ describe EmailValidator do
       subject.email = 'bad@mailnator.com'
       expect(subject.valid?).to be_falsey
       expect(subject.errors[:email]).to match_array [ 'custom message' ]
+    end
+  end
+
+  describe "Accepts procs as custom error message" do
+    subject { proc_custom_message.new }
+
+    it "calls the proc object for custom message" do
+      subject.email = 'bad@gmal'
+      expect(subject.valid?).to be_falsey
+      expect(subject.errors[:email]).to match_array [ 'my custom message' ]
     end
   end
 

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = ValidEmailVersion
   s.authors     = ["Ramihajamalala Hery"]
   s.email       = ["hery@rails-royce.org"]
-  s.homepage    = "http://my.rails-royce.org/2010/07/21/email-validation-in-ruby-on-rails-without-regexp"
+  s.homepage    = "https://github.com/hallelujah/valid_email"
   s.summary     = %q{ActiveModel Validation for email}
   s.description = %q{ActiveModel Validation for email}
   s.license     = 'MIT'

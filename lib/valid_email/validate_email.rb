@@ -90,14 +90,13 @@ class ValidateEmail
       m = Mail::Address.new(value)
       return false unless m.domain
 
-      mx = []
       Resolv::DNS.open do |dns|
         dns.timeouts = MxValidator.config[:timeouts] unless MxValidator.config[:timeouts].empty?
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX)
-        mx.concat dns.getresources(m.domain, Resolv::DNS::Resource::IN::A) if fallback
-      end
 
-      return mx.any?
+        return dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX).size > 0 || (
+          fallback && dns.getresources(m.domain, Resolv::DNS::Resource::IN::A).size > 0
+        )
+      end
     rescue Mail::Field::ParseError
       false
     end

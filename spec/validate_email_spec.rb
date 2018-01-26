@@ -42,6 +42,8 @@ describe ValidateEmail do
           'a.aa',
           'test.xn--clchc0ea0b2g2a9gcd',
           'my-domain.com',
+          'тест.рф',
+          'umläüt-domain.de',
         ]
 
         valid_domains.each do |valid_domain|
@@ -59,7 +61,6 @@ describe ValidateEmail do
           'oeuoue.-oeuoue',
           'oueaaoeu.oeue-',
           'ouoeu.eou_ueoe',
-          'тест.рф',
           '.test.com',
           'test..com',
           'test@test.com',

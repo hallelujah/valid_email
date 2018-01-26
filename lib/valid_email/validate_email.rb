@@ -5,7 +5,7 @@ class ValidateEmail
     SPECIAL_CHARS = %w(( ) , : ; < > @ [ ])
     SPECIAL_ESCAPED_CHARS = %w(\  \\ ")
     LOCAL_MAX_LEN = 64
-    DOMAIN_REGEX = /\A^([[:alpha:]]{1}|([[:alnum:]][a-zA-Z0-9-]{0,61}[[:alnum:]]))(\.([[:alnum:]][a-zA-Z0-9-]{0,61}[[:alnum:]]))+\z/
+    DOMAIN_REGEX = /\A^([[:alpha:]]{1}|([[:alnum:]][[[:alnum:]]-]{0,61}[[:alnum:]]))(\.([[:alnum:]][a-zA-Z0-9-]{0,61}[[:alnum:]]))+\z/
 
     def valid?(value, user_options={})
       options = {

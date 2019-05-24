@@ -38,11 +38,14 @@ describe ValidateEmail do
           'mail-temporaire.fr',
           'mt2009.com',
           'mega.zik.dj',
+          '0.test.com',
           'e.test.com',
+          'mail.e.test.com',
           'a.aa',
           'test.xn--clchc0ea0b2g2a9gcd',
           'my-domain.com',
           'тест.рф',
+          'mail.тест.рф',
           'umläüt-domain.de',
         ]
 

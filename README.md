@@ -107,6 +107,7 @@ nil.email? # => false
 * Joel Chippindale joel[at]joelchippindale.com
 * Sami Haahtinen sami[at]haahtinen.name
 * Jean Boussier jean.boussier[at]gmail.com
+* Masaki Hara - @qnighy
 
 # Note on Patches/Pull Requests
 

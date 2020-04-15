@@ -15,11 +15,19 @@ describe ValidateEmail do
     end
 
     context 'when mx: true option passed' do
+      def mock_dns_mx
+        dns = Resolv::DNS.new
+
+        allow(dns).to receive(:getresources).and_return([])
+        allow(Resolv::DNS).to receive(:new).and_return(dns)
+      end
+
       it 'returns true when mx record exist' do
         expect(ValidateEmail.valid?('user@gmail.com', mx: true)).to be_truthy
       end
 
       it "returns false when mx record doesn't exist" do
+        mock_dns_mx
         expect(ValidateEmail.valid?('user@example.com', mx: true)).to be_falsey
       end
     end

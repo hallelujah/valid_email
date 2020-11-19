@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", "~> 2.99"
   s.add_development_dependency "rake", '< 11.0'
   s.add_runtime_dependency "mail", ">= 2.6.1"
+  s.add_runtime_dependency "simpleidn"
   if Gem::Version.new(RUBY_VERSION) <= Gem::Version.new('2.0')
     s.add_runtime_dependency 'mime-types', '<= 2.6.2'
   end

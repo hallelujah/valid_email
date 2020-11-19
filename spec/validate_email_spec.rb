@@ -15,9 +15,9 @@ describe ValidateEmail do
     end
 
     context 'when mx: true option passed' do
-      def mock_dns_mx
-        dns = Resolv::DNS.new
+      let(:dns) { Resolv::DNS.new }
 
+      def mock_dns_mx
         allow(dns).to receive(:getresources).and_return([])
         allow(Resolv::DNS).to receive(:new).and_return(dns)
       end
@@ -29,6 +29,12 @@ describe ValidateEmail do
       it "returns false when mx record doesn't exist" do
         mock_dns_mx
         expect(ValidateEmail.valid?('user@example.com', mx: true)).to be_falsey
+      end
+
+      it "IDN-encodes the domain name if it contains multibyte characters" do
+        mock_dns_mx
+        ValidateEmail.valid?("user@\u{1F600}.com", mx: true)
+        expect(dns).to have_received(:getresources).with('xn--e28h.com', anything)
       end
     end
 

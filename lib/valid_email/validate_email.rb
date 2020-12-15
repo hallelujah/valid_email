@@ -1,4 +1,5 @@
 require 'mail'
+require 'simpleidn'
 
 class ValidateEmail
   class << self
@@ -90,11 +91,17 @@ class ValidateEmail
       m = Mail::Address.new(value)
       return false unless m.domain
 
+      if m.domain.ascii_only?
+        ascii_domain = m.domain
+      else
+        ascii_domain = SimpleIDN.to_ascii(m.domain)
+      end
+
       Resolv::DNS.open do |dns|
         dns.timeouts = MxValidator.config[:timeouts] unless MxValidator.config[:timeouts].empty?
 
-        return dns.getresources(m.domain, Resolv::DNS::Resource::IN::MX).size > 0 || (
-          fallback && dns.getresources(m.domain, Resolv::DNS::Resource::IN::A).size > 0
+        return dns.getresources(ascii_domain, Resolv::DNS::Resource::IN::MX).size > 0 || (
+          fallback && dns.getresources(ascii_domain, Resolv::DNS::Resource::IN::A).size > 0
         )
       end
     rescue Mail::Field::ParseError

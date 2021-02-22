@@ -290,4 +290,19 @@ describe EmailValidator do
     let!(:errors) { [ "est invalide" ] }
     it_behaves_like "Validating emails"
   end
+
+  describe 'Translating in czech' do
+    let!(:locale){ :cs }
+    let!(:errors) do
+      [
+        I18n.t(
+          :invalid,
+          locale: locale,
+          scope: [:valid_email, :validations, :email]
+        )
+      ]
+    end
+
+    it_behaves_like 'Validating emails'
+  end
 end

@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  s.add_development_dependency "rspec", "~> 2.99"
+  s.add_development_dependency "rspec", "~> 3.10"
   s.add_development_dependency "rake", '< 11.0'
   s.add_runtime_dependency "mail", ">= 2.6.1"
   s.add_runtime_dependency "simpleidn"

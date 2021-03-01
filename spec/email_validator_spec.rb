@@ -1,63 +1,48 @@
 require 'spec_helper'
 
 describe EmailValidator do
-  person_class = Class.new do
+  email_class = Class.new do
     include ActiveModel::Validations
     attr_accessor :email
+  end
+
+  person_class = Class.new(email_class) do
     validates :email, :email => true
   end
 
-  person_class_mx = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_mx = Class.new(email_class) do
     validates :email, :email => {:mx => true}
   end
 
-  person_class_mx_with_fallback = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_mx_with_fallback = Class.new(email_class) do
     validates :email, :email => {:mx_with_fallback => true}
   end
 
-  person_class_disposable_email = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_disposable_email = Class.new(email_class) do
     validates :email, :email => {:ban_disposable_email => true}
   end
 
-  person_class_nil_allowed = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_nil_allowed = Class.new(email_class) do
     validates :email, :email => {:allow_nil => true}
   end
 
-  person_class_blank_allowed = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_blank_allowed = Class.new(email_class) do
     validates :email, :email => {:allow_blank => true}
   end
 
-  person_class_mx_separated = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_mx_separated = Class.new(email_class) do
     validates :email, :mx => true
   end
 
-  person_class_mx_with_fallback_separated = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_mx_with_fallback_separated = Class.new(email_class) do
     validates :email, :mx_with_fallback => true
   end
 
-  person_class_domain = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_class_domain = Class.new(email_class) do
     validates :email, :domain => true
   end
 
-  person_message_specified = Class.new do
-    include ActiveModel::Validations
-    attr_accessor :email
+  person_message_specified = Class.new(email_class) do
     validates :email, :email => { :message => 'custom message', :ban_disposable_email => true }
   end
 

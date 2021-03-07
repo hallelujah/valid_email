@@ -28,7 +28,7 @@ class ValidateEmail
       return false unless m.domain.match(/^\S+$/)
 
       domain_dot_elements = m.domain.split(/\./)
-      return false unless domain_dot_elements.size > 1 && !domain_dot_elements.any?(&:empty?)
+      return false unless domain_dot_elements.size > 1 && domain_dot_elements.none?(&:empty?)
 
       # Ensure that the local segment adheres to adheres to RFC-5322
       return false unless valid_local?(m.local)

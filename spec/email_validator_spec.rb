@@ -3,7 +3,12 @@ require 'spec_helper'
 describe EmailValidator do
   email_class = Class.new do
     include ActiveModel::Validations
+
     attr_accessor :email
+
+    def self.model_name
+      ActiveModel::Name.new(self, nil, "TestModel")
+    end
   end
 
   person_class = Class.new(email_class) do

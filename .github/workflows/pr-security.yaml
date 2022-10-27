@@ -1,0 +1,11 @@
+name: Security Checks
+on:
+  pull_request:
+    types: [edited, opened, synchronize, reopened]
+  workflow_dispatch:
+jobs:
+  security-scans:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run security scans
+        uses: smartpension/github-action-security-review@0.2.0

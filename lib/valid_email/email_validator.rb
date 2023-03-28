@@ -22,7 +22,7 @@ class EmailValidator < ActiveModel::EachValidator
     end
     unless r
       msg = (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email"))
-      record.errors.add attribute, message: I18n.interpolate(msgs, value: value)
+      record.errors.add attribute, message: I18n.interpolate(msg, value: value)
     end
   end
 end

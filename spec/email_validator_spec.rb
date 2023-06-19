@@ -1,5 +1,21 @@
 require 'spec_helper'
 
+RSpec::Matchers.define :have_error_messages do |field, expected|
+  match do |model|
+    errors = model.errors[field]
+
+    messages = errors.map do |error|
+      case error
+      when String then error
+      when Hash then error[:message]
+      else fail ArgumentError, "Unknown model error type #{error.class}"
+      end
+    end
+
+    expect(messages).to eq expected
+  end
+end
+
 describe EmailValidator do
   email_class = Class.new do
     include ActiveModel::Validations
@@ -69,43 +85,43 @@ describe EmailValidator do
 
       it "fails when email empty" do
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email is not valid" do
         subject.email = 'joh@doe'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email domain is prefixed with dot" do
         subject.email = 'john@.doe'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email domain contains two consecutive dots" do
         subject.email = 'john@doe-two..com'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email ends with a period" do
         subject.email = 'john@doe.com.'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email ends with special characters" do
         subject.email = 'john@doe.com&'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when email is valid with information" do
         subject.email = '"John Doe" <john@doe.com>'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "passes when email is simple email address" do
@@ -117,19 +133,19 @@ describe EmailValidator do
       it "fails when email is simple email address not stripped" do
         subject.email = 'john@doe.com            '
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when domain contains a space" do
         subject.email = 'john@doe .com'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when passing multiple simple email addresses" do
         subject.email = 'john@doe.com, maria@doe.com'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
     end
@@ -162,7 +178,7 @@ describe EmailValidator do
         allow(dns).to receive(:getresources).with('does-not-exist.org', anything).and_return([])
         subject.email = 'john@does-not-exist.org'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
     end
 
@@ -178,13 +194,13 @@ describe EmailValidator do
       it "fails when email domain has no MX record" do
         subject.email = 'john@subdomain.rubyonrails.org'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "fails when domain does not exists" do
         subject.email = 'john@nonexistentdomain.abc'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
     end
 
@@ -228,7 +244,7 @@ describe EmailValidator do
       it "fails when email from disposable email services" do
         subject.email = 'john@grr.la'
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
     end
 
@@ -238,7 +254,7 @@ describe EmailValidator do
       it "does not pass with an invalid domain" do
         subject.email = "test@example.org$\'"
         expect(subject.valid?).to be_falsey
-        expect(subject.errors[:email]).to eq errors
+        expect(subject).to have_error_messages(:email, errors)
       end
 
       it "passes with valid domain" do

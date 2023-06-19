@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   # specify any dependencies here; for example:
   s.add_development_dependency "rspec", "~> 3.10"
-  s.add_development_dependency "rake", '< 11.0'
+  s.add_development_dependency "rake"
   s.add_runtime_dependency "mail", ">= 2.6.1"
   s.add_runtime_dependency "simpleidn"
   if Gem::Version.new(RUBY_VERSION) <= Gem::Version.new('2.0')

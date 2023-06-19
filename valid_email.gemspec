@@ -22,10 +22,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_runtime_dependency "mail", ">= 2.6.1"
   s.add_runtime_dependency "simpleidn"
-  if Gem::Version.new(RUBY_VERSION) <= Gem::Version.new('2.0')
+  if Gem::Version.new(RUBY_VERSION.dup) <= Gem::Version.new('2.0')
     s.add_runtime_dependency 'mime-types', '<= 2.6.2'
   end
-  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('2.2.2')
+  if Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.2.2')
     s.add_runtime_dependency "activemodel", '< 5.0.0'
   else
     s.add_runtime_dependency "activemodel"

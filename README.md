@@ -122,7 +122,7 @@ nil.email? # => false
 
 ## Code Status
 
-[![Build Status](https://travis-ci.org/hallelujah/valid_email.svg?branch=master)](https://travis-ci.org/hallelujah/valid_email)
+[![Build Status](https://github.com/hallelujah/valid_email/actions/workflows/ci.yaml/badge.svg)](https://github.com/hallelujah/valid_email/actions/workflows/ci.yaml)
 
 ## Credits
 

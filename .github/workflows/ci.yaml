@@ -24,6 +24,8 @@ jobs:
           - '3.2'
           - 'jruby-head'
           - 'truffleruby-head'
+    env:
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3

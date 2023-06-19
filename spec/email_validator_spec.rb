@@ -135,22 +135,32 @@ describe EmailValidator do
     end
 
     describe "validating email with MX and fallback to A" do
+      let(:dns) { instance_double('Resolv::DNS', :dns) }
+
       subject { person_class_mx_with_fallback.new }
 
+      before do
+        allow(Resolv::DNS).to receive(:open).and_yield(dns)
+      end
+
       it "passes when email domain has MX record" do
-        subject.email = 'john@gmail.com'
+        allow(dns).to receive(:getresources).with('has-mx-record.org', Resolv::DNS::Resource::IN::MX).and_return(['1.2.3.4'])
+        subject.email = 'john@has-mx-record.org'
         expect(subject.valid?).to be_truthy
         expect(subject.errors[:email]).to be_empty
       end
 
       it "passes when email domain has no MX record but has an A record" do
-        subject.email = 'john@subdomain.rubyonrails.org'
+        allow(dns).to receive(:getresources).with('has-a-record.org', Resolv::DNS::Resource::IN::MX).and_return([])
+        allow(dns).to receive(:getresources).with('has-a-record.org', Resolv::DNS::Resource::IN::A).and_return(['1.2.3.4'])
+        subject.email = 'john@has-a-record.org'
         expect(subject.valid?).to be_truthy
         expect(subject.errors[:email]).to be_empty
       end
 
       it "fails when domain does not exists" do
-        subject.email = 'john@nonexistentdomain.abc'
+        allow(dns).to receive(:getresources).with('does-not-exist.org', anything).and_return([])
+        subject.email = 'john@does-not-exist.org'
         expect(subject.valid?).to be_falsey
         expect(subject.errors[:email]).to eq errors
       end

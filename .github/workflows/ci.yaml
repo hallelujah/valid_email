@@ -1,0 +1,24 @@
+name: CI
+on:
+  workflow_dispatch:
+  push:
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  rspec:
+    name: RSpec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake

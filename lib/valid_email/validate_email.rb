@@ -128,5 +128,15 @@ class ValidateEmail
     rescue Mail::Field::ParseError
       false
     end
+
+    def ban_partial_disposable_email?(value)
+      m = Mail::Address.new(value)
+      m.domain && !BanDisposableEmailValidator.config.any? do |bde|
+        next if bde == nil
+        m.domain.end_with?(bde)
+      end
+    rescue Mail::Field::ParseError
+      false
+    end
   end
 end

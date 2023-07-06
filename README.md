@@ -74,6 +74,16 @@ validates :email,
           }
 ```
 
+You can detect partial match on disposable accounts, good for services that use subdomains.
+
+```ruby
+validates :email,
+          email: {
+            ban_partial_disposable_email: true,
+            message: I18n.t('validations.errors.models.user.invalid_email')
+          }
+```
+
 If you don't want the MX validator stuff, just require the right file
 
 ```ruby

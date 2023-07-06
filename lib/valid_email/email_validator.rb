@@ -20,6 +20,11 @@ class EmailValidator < ActiveModel::EachValidator
       require 'valid_email/ban_disposable_email_validator'
       r = BanDisposableEmailValidator.new(:attributes => attributes, message: options[:message]).validate(record)
     end
+    # Check if part of domain is in disposable list
+    if r && options[:ban_partial_disposable_email]
+      require 'valid_email/ban_partial_disposable_email_validator'
+      r = BanPartialDisposableEmailValidator.new(:attributes => attributes, message: options[:message]).validate(record)
+    end
     unless r
       msg = (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email"))
       record.errors.add attribute, message: I18n.interpolate(msg, value: value)

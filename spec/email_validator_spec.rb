@@ -43,6 +43,10 @@ describe EmailValidator do
     validates :email, :email => {:ban_disposable_email => true}
   end
 
+  person_class_partial_disposable_email = Class.new(email_class) do
+    validates :email, :email => {:ban_partial_disposable_email => true}
+  end
+
   person_class_nil_allowed = Class.new(email_class) do
     validates :email, :email => {:allow_nil => true}
   end
@@ -245,6 +249,22 @@ describe EmailValidator do
         subject.email = 'john@grr.la'
         expect(subject.valid?).to be_falsey
         expect(subject).to have_error_messages(:email, errors)
+      end
+    end
+
+    describe "validating email against partial disposable service match" do
+      subject { person_class_partial_disposable_email.new }
+
+      it "passes when email from trusted email services" do
+        subject.email = 'john@test.mail.ru'
+        expect(subject.valid?).to be_truthy
+        expect(subject.errors[:email]).to be_empty
+      end
+
+      it "fails when disposable email services partially matches email domain" do
+        subject.email = 'john@sub.grr.la'
+        expect(subject.valid?).to be_falsey
+        expect(subject.errors[:email]).to eq errors
       end
     end
 

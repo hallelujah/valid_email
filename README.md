@@ -74,13 +74,14 @@ validates :email,
           }
 ```
 
-You can detect partial match on disposable accounts, good for services that use subdomains.
+You can also detect a partial match on disposable accounts, good for services that use subdomains.
 
 ```ruby
 validates :email,
           email: {
-            ban_partial_disposable_email: true,
             message: I18n.t('validations.errors.models.user.invalid_email')
+            ban_disposable_email: true,
+            partial: true
           }
 ```
 

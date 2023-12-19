@@ -15,9 +15,19 @@ class BanDisposableEmailValidator < ActiveModel::EachValidator
   end
 
   def validate_each(record, attribute, value)
-    r = ValidateEmail.ban_disposable_email?(value)
-    record.errors.add attribute, (options[:message] || I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+    # Check if part of domain is in disposable_email_services yml list
+    if options[:partial]
+      r = ValidateEmail.ban_partial_disposable_email?(value)
+      record.errors.add attribute, (options[:message] ||
+        I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
 
-    r
+      r
+    else
+      r = ValidateEmail.ban_disposable_email?(value)
+      record.errors.add attribute, (options[:message] ||
+        I18n.t(:invalid, :scope => "valid_email.validations.email")) unless r
+
+      r
+    end
   end
 end

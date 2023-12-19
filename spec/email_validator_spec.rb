@@ -44,7 +44,7 @@ describe EmailValidator do
   end
 
   person_class_partial_disposable_email = Class.new(email_class) do
-    validates :email, :email => {:ban_partial_disposable_email => true}
+    validates :email, :email => {:ban_disposable_email => true, :partial => true}
   end
 
   person_class_nil_allowed = Class.new(email_class) do
@@ -151,7 +151,6 @@ describe EmailValidator do
         expect(subject.valid?).to be_falsey
         expect(subject).to have_error_messages(:email, errors)
       end
-
     end
 
     describe "validating email with MX and fallback to A" do
